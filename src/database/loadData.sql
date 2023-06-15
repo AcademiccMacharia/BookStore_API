@@ -23,7 +23,7 @@ CREATE TABLE Members(
     MemberID INT IDENTITY(1,1) PRIMARY KEY,
     Name VARCHAR(50) NOT NULL,
     Address VARCHAR(50) NOT NULL,
-    ContactNumber VARCHAR(50) NOT NULL
+    ContactNumber VARCHAR(50) NOT NULL UNIQUE
 );
 GO
 
