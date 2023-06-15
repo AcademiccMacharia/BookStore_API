@@ -101,7 +101,7 @@ async function createMember(req, res) {
       let result = await request.execute("create_member");
       res.json({
         success: true,
-        message: "Mmeber created successfully",
+        message: "Member created successfully",
         data: result.recordset,
       });
     }
