@@ -1,7 +1,7 @@
 const mssql = require('mssql');
 const config = require('../config/bookStoreConfig');
 
-async function getBookbyID(req, res) {
+async function getBookByID(req, res) {
     try {
       let { BookID } = req.params;
       let sql = await mssql.connect(config);
@@ -89,6 +89,24 @@ async function getMemberByID(req, res) {
     
 }
 
+async function createMember(req, res) {
+    let sql = await mssql.connect(config);
+    if (sql.connected) {
+      const { Name, Address, ContactNumber } = req.body;
+      let request = sql.request()
+                        .input("Name", Name)
+                        .input("Address", Address)
+                        .input("ContactNumber", ContactNumber);
+
+      let result = await request.execute("create_member");
+      res.json({
+        success: true,
+        message: "Mmeber created successfully",
+        data: result.recordset,
+      });
+    }
+  }
+
 
 
 
@@ -96,7 +114,7 @@ module.exports = {
     Home: (req, res)=> {
         res.send("Book Management API")
     },
-    getAllBooks, getAllMembers, getMemberByID,getAllMembers, getMemberByID, getBookByID
+    getAllBooks, getAllMembers, getMemberByID, getAllMembers, getMemberByID, getBookByID, createMember
 }
    
 
