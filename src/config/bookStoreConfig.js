@@ -12,7 +12,7 @@ const config = {
     },
     options: {
         encrypt: true, // for azure
-        trustServerCertificate: false 
+        trustServerCertificate: true
     }
 }
 
