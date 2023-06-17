@@ -151,6 +151,58 @@ async function createMember(req, res) {
       message: "Member created successfully",
       data: result.recordset,
     });
+    
+  }
+}
+
+async function returnBook(req, res) {
+  let sql = await mssql.connect(config);
+  if (sql.connected) {
+    const { MemberName, BookID } = req.body;
+
+    let memberQuery = await sql.request()
+      .input("MemberName", MemberName)
+      .query("SELECT MemberID FROM Members WHERE Name = @MemberName");
+
+    if (memberQuery.recordset.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Member not found",
+      });
+    }
+
+    const MemberID = memberQuery.recordset[0].MemberID;
+
+    let bookQuery = await sql.request()
+      .input("BookID", BookID)
+      .query("SELECT Status FROM Books WHERE BookID = @BookID");
+
+    if (bookQuery.recordset.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Book not found",
+      });
+    }
+
+    if (bookQuery.recordset[0].Status !== "Loaned") {
+      return res.status(400).json({
+        success: false,
+        message: "Book is not currently on loan",
+      });
+    }
+
+    let result = await sql.request()
+      .input("MemberID", MemberID)
+      .input("BookID", BookID)
+      .execute('ReturnBook');
+
+    res.json({
+      success: true,
+      message: "Book returned successfully",
+      data: result.recordset
+    });
+  } else {
+    res.status(500).send("Internal server error");
   }
 }
 
@@ -176,12 +228,11 @@ async function BorrowBook(req, res) {
   }
 }
 
-
+  
 module.exports = {
   Home: (req, res) => {
     res.send("Book Management API")
   },
-  getAllBooks, getAllMembers, getMemberByID, getAllMembers, getMemberByID, getBookByID, createMember, createBook,
-  GetBorrowingMember, BorrowBook
+  getAllBooks, getAllMembers, getMemberByID, getAllMembers, getMemberByID, getBookByID, createMember, createBook, GetBorrowingMember, BorrowBook, returnBook
 }
 
