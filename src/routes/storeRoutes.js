@@ -12,7 +12,7 @@ router.post('/members', createMember);
 router.get('/books', getAllBooks);
 router.get('/books/:BookID', getBookByID);
 router.post('/books', createBook);
-router.get('/members', GetBorrowingMember);
+router.get('/borrowers', GetBorrowingMember);
 
 
 
