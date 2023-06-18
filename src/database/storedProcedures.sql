@@ -22,18 +22,20 @@ EXEC get_book_by_id @BookID = 3;
 CREATE PROCEDURE create_member
     @Name VARCHAR(50),
     @Address VARCHAR(50),
-    @ContactNumber VARCHAR(50)
+    @ContactNumber VARCHAR(50),
+    @Password VARCHAR(50)
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO Members (Name, Address, ContactNumber)
-    VALUES (@Name, @Address, @ContactNumber);
+    INSERT INTO Members (Name, Address, ContactNumber, Password)
+    VALUES (@Name, @Address, @ContactNumber, @Password);
 END;
 
 -- EXEC create_member
 --     @Name='Abunwasi',
 --     @Address='Nyeri - 4567',
 --     @ContactNumber='+254 712 345 574'
+--     @Password='Secret123'
 
  
 
@@ -59,3 +61,20 @@ BEGIN
     WHERE BookID = @BookID;
 END
 GO
+
+-- Get member by ID
+
+USE Library;
+GO
+
+CREATE OR ALTER PROCEDURE GetMemberByID
+    @MemberID INT
+AS
+BEGIN
+    SELECT *
+    FROM Members
+    WHERE MemberID = @MemberID;
+END;
+GO
+
+EXEC GetMemberByID @MemberID = 1;

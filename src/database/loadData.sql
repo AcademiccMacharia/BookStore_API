@@ -30,7 +30,8 @@ CREATE TABLE Members(
     MemberID INT IDENTITY(1,1) PRIMARY KEY,
     Name VARCHAR(50) NOT NULL,
     Address VARCHAR(50) NOT NULL,
-    ContactNumber VARCHAR(50) NOT NULL
+    ContactNumber VARCHAR(50) NOT NULL,
+    Password VARCHAR(50) NOT NULL
 );
 GO
 
@@ -92,45 +93,45 @@ VALUES
 
 GO
 
-INSERT INTO Members (Name, Address, ContactNumber)
+INSERT INTO Members (Name, Address, ContactNumber, Password)
 VALUES
-    ('John Kimani', 'Nairobi, Kenya', '+254 712 345 678'),
+    ('John Kimani', 'Nairobi, Kenya', '+254 712 345 678', 'P@ssw0rd1'),
 
-    ('Grace Muthoni', 'Mombasa, Kenya', '+254 701 234 567'),
+    ('Grace Muthoni', 'Mombasa, Kenya', '+254 701 234 567', 'SecurePassword2'),
 
-    ('Peter Wanjiku', 'Nakuru, Kenya', '+254 703 456 789'),
+    ('Peter Wanjiku', 'Nakuru, Kenya', '+254 703 456 789', 'MyPassw0rd!'),
 
-    ('Mary Njeri', 'Kisumu, Kenya', '+254 712 345 678'),
+    ('Mary Njeri', 'Kisumu, Kenya', '+254 712 345 678', 'Secret123'),
 
-    ('James Kamau', 'Eldoret, Kenya', '+254 702 345 678'),
+    ('James Kamau', 'Eldoret, Kenya', '+254 702 345 678', 'Pa$$w0rd'),
 
-    ('Faith Wairimu', 'Nairobi, Kenya', '+254 712 345 678'),
+    ('Faith Wairimu', 'Nairobi, Kenya', '+254 712 345 678', 'StrongP@ss!'),
 
-    ('Joseph Mwangi', 'Mombasa, Kenya', '+254 701 234 567'),
+    ('Joseph Mwangi', 'Mombasa, Kenya', '+254 701 234 567', 'Password123'),
 
-    ('Susan Akinyi', 'Nakuru, Kenya', '+254 703 456 789'),
+    ('Susan Akinyi', 'Nakuru, Kenya', '+254 703 456 789', 'P@55w0rd'),
 
-    ('David Omondi', 'Kisumu, Kenya', '+254 712 345 678'),
+    ('David Omondi', 'Kisumu, Kenya', '+254 712 345 678', 'Secure123!'),
 
-    ('Elizabeth Auma', 'Eldoret, Kenya', '+254 702 345 678'),
+    ('Elizabeth Auma', 'Eldoret, Kenya', '+254 702 345 678', 'P@ssw0rd'),
 
-    ('Michael Ochieng', 'Nairobi, Kenya', '+254 712 345 678'),
+    ('Michael Ochieng', 'Nairobi, Kenya', '+254 712 345 678', 'SecretPass1'),
 
-    ('Catherine Wanjiru', 'Mombasa, Kenya', '+254 701 234 567'),
+    ('Catherine Wanjiru', 'Mombasa, Kenya', '+254 701 234 567', 'MyP@ssw0rd'),
 
-    ('Samuel Njoroge', 'Nakuru, Kenya', '+254 703 456 789'),
+    ('Samuel Njoroge', 'Nakuru, Kenya', '+254 703 456 789', 'StrongPassword1'),
 
-    ('Joyce Achieng', 'Kisumu, Kenya', '+254 712 345 678'),
+    ('Joyce Achieng', 'Kisumu, Kenya', '+254 712 345 678', 'P@ssword!'),
 
-    ('Daniel Mutua', 'Eldoret, Kenya', '+254 702 345 678'),
+    ('Daniel Mutua', 'Eldoret, Kenya', '+254 702 345 678', 'SecurePass123'),
 
-    ('Rose Mwikali', 'Nairobi, Kenya', '+254 712 345 678'),
+    ('Rose Mwikali', 'Nairobi, Kenya', '+254 712 345 678', 'Secret@123'),
 
-    ('Pauline Muthoni', 'Mombasa, Kenya', '+254 701 234 567'),
+    ('Pauline Muthoni', 'Mombasa, Kenya', '+254 701 234 567', 'P@ssw0rd123'),
 
-    ('Simon Mwaura', 'Nakuru, Kenya', '+254 703 456 789'),
+    ('Simon Mwaura', 'Nakuru, Kenya', '+254 703 456 789', 'MyP@55word'),
 
-    ('Grace Achieng', 'Kisumu, Kenya', '+254 712 345 678'),
+    ('Grace Achieng', 'Kisumu, Kenya', '+254 712 345 678', 'SecurePass!'),
 
-    ('Joshua Okoth', 'Eldoret, Kenya', '+254 702 345 678');
+    ('Joshua Okoth', 'Eldoret, Kenya', '+254 702 345 678', 'P@ssw0rd2');
 GO

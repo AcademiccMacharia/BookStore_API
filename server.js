@@ -1,6 +1,6 @@
 const express = require('express');
 const router = require('./src/routes/storeRoutes')
-
+const memberRoutes = require('./src/routes/memberRoutes')
 
 
 require('dotenv').config();
@@ -11,6 +11,7 @@ app.use(express.json());
 
 
 app.use('/',router);
+app.use('/members', memberRoutes)
 
 
 
