@@ -8,7 +8,7 @@ const { Home, getAllBooks, getAllMembers, getMemberByID, getBookByID, createMemb
 router.get('/', Home)
 router.get('/members', getAllMembers);
 router.get('/members/:MemberID', getMemberByID);
-router.post('/members', createMember);
+//router.post('/members', createMember);
 router.get('/books', getAllBooks);
 router.get('/books/:BookID', getBookByID);
 router.post('/books', createBook);

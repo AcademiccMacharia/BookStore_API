@@ -136,24 +136,24 @@ async function getMemberByID(req, res) {
 
 }
 
-async function createMember(req, res) {
-  let sql = await mssql.connect(config);
-  if (sql.connected) {
-    const { Name, Address, ContactNumber } = req.body;
-    let request = sql.request()
-      .input("Name", Name)
-      .input("Address", Address)
-      .input("ContactNumber", ContactNumber);
+// async function createMember(req, res) {
+//   let sql = await mssql.connect(config);
+//   if (sql.connected) {
+//     const { Name, Address, ContactNumber } = req.body;
+//     let request = sql.request()
+//       .input("Name", Name)
+//       .input("Address", Address)
+//       .input("ContactNumber", ContactNumber);
 
-    let result = await request.execute("create_member");
-    res.json({
-      success: true,
-      message: "Member created successfully",
-      data: result.recordset,
-    });
+//     let result = await request.execute("create_member");
+//     res.json({
+//       success: true,
+//       message: "Member created successfully",
+//       data: result.recordset,
+//     });
     
-  }
-}
+//   }
+// }
 
 async function returnBook(req, res) {
   let sql = await mssql.connect(config);
@@ -233,6 +233,6 @@ module.exports = {
   Home: (req, res) => {
     res.send("Book Management API")
   },
-  getAllBooks, getAllMembers, getMemberByID, getAllMembers, getMemberByID, getBookByID, createMember, createBook, GetBorrowingMember, BorrowBook, returnBook
+  getAllBooks, getAllMembers, getMemberByID, getAllMembers, getMemberByID, getBookByID, createBook, GetBorrowingMember, BorrowBook, returnBook
 }
 
