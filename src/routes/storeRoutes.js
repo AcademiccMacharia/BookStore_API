@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 
-const { Home, getAllBooks, getAllMembers, getMemberByID, getBookByID, createMember,createBook, GetBorrowingMember, returnBook, BorrowBook } = require('../controllers/storeController')
+const { Home, getAllBooks, getAllMembers, getMemberByID, getBookByID, createMember, createBook, GetBorrowingMember, returnBook, BorrowBook } = require('../controllers/storeController')
 
 router.get('/', Home)
 router.get('/members', getAllMembers);

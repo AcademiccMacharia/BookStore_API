@@ -8,12 +8,12 @@ async function createBook(req, res) {
     let sql = await mssql.connect(config);
     if (sql.connected) {
       let createBookResult = await sql.request()
-        .input('Title', mssql.VarChar(100), book.title)
-        .input('Author', mssql.VarChar(50), book.author)
-        .input('PublicationYear', mssql.Date, book.publicationYear)
-        .execute('library.CreateBook');
+        .input('Title', mssql.VarChar(100), book.Title)
+        .input('Author', mssql.VarChar(50), book.Author)
+        .input('PublicationYear', mssql.Date, book.PublicationYear)
+        .execute('dbo.CreateBook');
 
-      let getBooksResult = await sql.request().query('SELECT * FROM library.Books');
+      let getBooksResult = await sql.request().query('SELECT * FROM dbo.Books');
 
       console.log(createBookResult);
       console.log(getBooksResult.recordset);
