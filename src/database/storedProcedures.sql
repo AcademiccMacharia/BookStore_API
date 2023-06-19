@@ -23,7 +23,7 @@ CREATE PROCEDURE create_member
     @Name VARCHAR(50),
     @Address VARCHAR(50),
     @ContactNumber VARCHAR(50),
-    @Password VARCHAR(50)
+    @Password VARCHAR(255)
 AS
 BEGIN
     SET NOCOUNT ON;

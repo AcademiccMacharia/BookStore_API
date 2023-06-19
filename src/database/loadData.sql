@@ -31,7 +31,7 @@ CREATE TABLE Members(
     Name VARCHAR(50) NOT NULL,
     Address VARCHAR(50) NOT NULL,
     ContactNumber VARCHAR(50) NOT NULL,
-    Password VARCHAR(50) NOT NULL
+    Password VARCHAR(255) NOT NULL
 );
 GO
 
