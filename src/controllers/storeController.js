@@ -1,16 +1,18 @@
 const mssql = require('mssql');
 const config = require('../config/bookStoreConfig');
+const{newBookValidator}=require('../validators/newBookValidator')
 
 
 async function createBook(req, res) {
   const book = req.body;
   try {
+    let { value }=newBookValidator(book)
     let sql = await mssql.connect(config);
     if (sql.connected) {
       let createBookResult = await sql.request()
-        .input('Title', mssql.VarChar(100), book.Title)
-        .input('Author', mssql.VarChar(50), book.Author)
-        .input('PublicationYear', mssql.Date, book.PublicationYear)
+        .input('Title', mssql.VarChar(100), value.Title)
+        .input('Author', mssql.VarChar(50), value.Author)
+        .input('PublicationYear', mssql.Date, value.PublicationYear)
         .execute('dbo.CreateBook');
 
       let getBooksResult = await sql.request().query('SELECT * FROM dbo.Books');
@@ -18,14 +20,13 @@ async function createBook(req, res) {
       console.log(createBookResult);
       console.log(getBooksResult.recordset);
 
-      res.status(200).json({
-        statusCode: true,
-        message: "Book created successfully",
-        books: getBooksResult.recordset
-      });
+     createBookResult.rowsAffected? res.status(200).send({
+        success: true,
+        message: "Book created successfully" })
+        : res.status(500).send({ success: false, message: 'An error occured. Try again!' });
     }
   } catch (error) {
-    console.log(error);
+    res.send(error.message);
   }
 }
 
@@ -118,23 +119,42 @@ async function getAllMembers(req, res) {
 
 
 
-async function getMemberByID(req, res) {
 
+
+async function getMemberByID(req, res) {
+  try{
   let { MemberID } = req.params;
   let sql = await mssql.connect(config);
   if (sql.connected) {
-    let results = await sql.query(`SELECT* from dbo.Members WHERE MemberID=${Number(MemberID)}`)
+    if (sql.connected) {
+      let results = sql.request()
+        .input('MemberID', MemberID)
+        .execute('GetMemberByID');
 
-    let member = results.recordset[0]
+      let member = (await results).recordset[0]
 
-    res.json({
+if(member){
+   res.json({
       success: true,
-      message: 'fetched product successfully',
+      message:'member with id ' + MemberID + ' fetched successfully',
       results: member
     })
-  }
+} else{
+    res.json({
+      success: false,
+      message: 'MemberID does not exist'}) }
 
+  } else {
+    res.status(500).send("Internal server error");
+  }}
+} catch (error) {
+  res.status(400).json({
+    success: false,
+    message: 'Invalid Member ID'
+  })
 }
+}
+
 
 // async function createMember(req, res) {
 //   let sql = await mssql.connect(config);
@@ -215,7 +235,7 @@ async function BorrowBook(req, res) {
       .input("BookID", BookID)
       .input("LoanDate", LoanDate)
       .input("ReturnDate", ReturnDate)
-      .execute('library.BorrowBook');
+      .execute('dbo.BorrowBook');
 
     console.log(result.recordset)
     res.json({
