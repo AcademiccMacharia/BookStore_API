@@ -13,4 +13,15 @@ function newBookValidator(body) {
     
 }
 
-module.exports={newBookValidator}
+// function borrowBookValidator(body) {
+//     let borrowed_book=borrow_Book_Schema.validate(body,{abortEarly: false})
+//     if (borrowed_book.error?.details.length){
+//         let message=borrowed_book.error.details.map(err=>err.message)
+
+//         throw new Error(message.join("\n"))
+//     }else{
+        
+    
+// }}
+
+module.exports={newBookValidator, }
