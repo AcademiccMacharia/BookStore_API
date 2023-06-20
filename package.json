@@ -19,10 +19,15 @@
   },
   "homepage": "https://github.com/AcademiccMacharia/BookStore_API#readme",
   "dependencies": {
+    "@joi/date": "^2.1.0",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
+<<<<<<< HEAD
+    "joi": "^17.9.2",
+=======
     "jsonwebtoken": "^9.0.0",
+>>>>>>> main
     "mssql": "^9.1.1"
   }
 }
