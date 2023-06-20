@@ -3,6 +3,7 @@ const mssql = require('mssql');
 const bcrypt = require('bcrypt');
 const { getMemberByID } = require('../utils/getMember');
 const { tokenGenerator } = require('../utils/tokens');
+const { sendMail } = require('../utils/sendMail');
 
 module.exports = {
   postMember: async (req, res) => {
@@ -17,9 +18,15 @@ module.exports = {
           .input("Address", member.Address)
           .input("ContactNumber", member.ContactNumber)
           .input("Password", hashedPwd)
+          .input("Email", member.Email)
           .execute("library.create_member");
 
         console.log(results);
+        try {
+          await sendMail(member.Email, member.Name);
+        } catch {
+          console.log("error");
+        }
         res.json({
           success: true,
           message: "Member created successfully",
@@ -32,6 +39,7 @@ module.exports = {
     }
   },
 
+
   loginMember: async (req, res) => {
     let { MemberID, Password } = req.body;
     try {
@@ -42,7 +50,7 @@ module.exports = {
           let token = await tokenGenerator({
             MemberID: member.MemberID,
             roles: "admin"
-          })
+          });
 
           res.json({
             success: true,
@@ -67,3 +75,4 @@ module.exports = {
     }
   }
 };
+
