@@ -1,7 +1,7 @@
 const mssql = require('mssql');
 const config = require('../config/bookStoreConfig');
 const{newBookValidator}=require('../validators/newBookValidator')
-
+const { tokenVerifier } = require('../utils/tokens');
 
 async function createBook(req, res) {
   const book = req.body;
@@ -85,9 +85,15 @@ async function getBookByID(req, res) {
 }
 
 async function getAllBooks(req, res) {
-  let sql = await mssql.connect(config);
+
+  let token = req.headers['authorization'].split(" ")[1];
+  console.log(token)
+
+  let user = await tokenVerifier(token);
+  if(user.roles === 'admin'){
+      let sql = await mssql.connect(config);
   if (sql.connected) {
-    let results = await sql.query(`SELECT * from dbo.Books`)
+    let results = await sql.query(`SELECT * from library.Books`)
     let books = results.recordset;
     res.json({
       success: true,
@@ -97,13 +103,13 @@ async function getAllBooks(req, res) {
   } else {
     res.status(500).send('Internal server error')
   }
-
-}
+  }
+};
 
 async function getAllMembers(req, res) {
   let sql = await mssql.connect(config);
   if (sql.connected) {
-    let results = await sql.query(`SELECT * from dbo.Members`)
+    let results = await sql.query(`SELECT * from library.Members`)
     let Members = results.recordset;
 
     res.json({
