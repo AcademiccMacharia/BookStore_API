@@ -2,6 +2,8 @@ const mssql = require('mssql');
 const config = require('../config/bookStoreConfig');
 const { newBookValidator } = require('../validators/newBookValidator')
 const { tokenVerifier } = require('../utils/tokens');
+const { sendBorrowMail } = require('../utils/sendBorrowMail');
+const { sendReturnMail } = require('../utils/sendReturnMail');
 
 async function createBook(req, res) {
   const book = req.body;
@@ -108,13 +110,13 @@ async function getAllBooks(req, res) {
   } catch (error) {
     console.log(error)
 
-    if (error.message.includes('token') || error.message.includes('invalid') ) {
+    if (error.message.includes('token') || error.message.includes('invalid')) {
       res.status(403).json({
         success: false,
         body: 'Log in again'
       })
     }
-}
+  }
 
 };
 
@@ -196,56 +198,57 @@ async function getMemberByID(req, res) {
 //   }
 // }
 
-async function returnBook(req, res) {
-  let sql = await mssql.connect(config);
-  if (sql.connected) {
-    const { MemberName, BookID } = req.body;
+// async function returnBook(req, res) {
+//   let sql = await mssql.connect(config);
+//   if (sql.connected) {
+//     const { MemberName, BookID } = req.body;
 
-    let memberQuery = await sql.request()
-      .input("MemberName", MemberName)
-      .query("SELECT MemberID FROM Members WHERE Name = @MemberName");
+//     let memberQuery = await sql.request()
+//       .input("MemberName", MemberName)
+//       .query("SELECT MemberID FROM Members WHERE Name = @MemberName");
 
-    if (memberQuery.recordset.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Member not found",
-      });
-    }
+//     if (memberQuery.recordset.length === 0) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Member not found",
+//       });
+//     }
 
-    const MemberID = memberQuery.recordset[0].MemberID;
+//     const MemberID = memberQuery.recordset[0].MemberID;
 
-    let bookQuery = await sql.request()
-      .input("BookID", BookID)
-      .query("SELECT Status FROM Books WHERE BookID = @BookID");
+//     let bookQuery = await sql.request()
+//       .input("BookID", BookID)
+//       .query("SELECT Status FROM Books WHERE BookID = @BookID");
 
-    if (bookQuery.recordset.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Book not found",
-      });
-    }
+//     if (bookQuery.recordset.length === 0) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Book not found",
+//       });
+//     }
 
-    if (bookQuery.recordset[0].Status !== "Loaned") {
-      return res.status(400).json({
-        success: false,
-        message: "Book is not currently on loan",
-      });
-    }
+//     if (bookQuery.recordset[0].Status !== "Loaned") {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Book is not currently on loan",
+//       });
+//     }
 
-    let result = await sql.request()
-      .input("MemberID", MemberID)
-      .input("BookID", BookID)
-      .execute('ReturnBook');
+//     let result = await sql.request()
+//       .input("MemberID", MemberID)
+//       .input("BookID", BookID)
+//       .execute('ReturnBook');
 
-    res.json({
-      success: true,
-      message: "Book returned successfully",
-      data: result.recordset
-    });
-  } else {
-    res.status(500).send("Internal server error");
-  }
-}
+//     res.json({
+//       success: true,
+//       message: "Book returned successfully",
+//       data: result.recordset
+//     });
+//   } else {
+//     res.status(500).send("Internal server error");
+//   }
+// }
+
 
 async function BorrowBook(req, res) {
   let sql = await mssql.connect(config);
@@ -256,17 +259,57 @@ async function BorrowBook(req, res) {
       .input("BookID", BookID)
       .input("LoanDate", LoanDate)
       .input("ReturnDate", ReturnDate)
+      .output("Status", mssql.NVarChar(100))
       .execute('library.BorrowBook');
 
-    console.log(result.recordset)
+    const status = result.output.Status;
+    console.log(result.recordsets[0][0]);
+
+    if (status === 'Book borrowed successfully.') {
+      const borrowedBook = result.recordsets[0][0];
+      const { Email, Name, Title } = borrowedBook;
+      await sendBorrowMail(Email, Name, Title, ReturnDate);
+    }
+
     res.json({
       success: true,
-      data: result.recordset
+      data: result.recordsets[0]
     });
   } else {
     res.status(500).send("Internal server error");
   }
 }
+
+async function returnBook(req, res) {
+  const { MemberID, BookID } = req.body;
+  try {
+    const sql = await mssql.connect(config);
+
+    let result = await sql.request()
+    .input("MemberID", mssql.Int, MemberID)
+    .input("BookID", mssql.Int, BookID)
+    .output("Status", mssql.NVarChar(100))
+    .execute('library.ReturnBook');
+
+    const status = result.output.Status;
+
+    if (status === 'Book returned successfully.') {
+      const returnedBook = result.recordset[0];
+      const { Email, Name, Title } = returnedBook;
+      await sendReturnMail(Email, Name, Title);
+    }
+
+    res.json({
+      success: true,
+      status,
+      data: result.recordset
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+}
+
 
 
 module.exports = {
