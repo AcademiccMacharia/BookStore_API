@@ -15,9 +15,9 @@ async function createBook(req, res) {
         .input('Title', mssql.VarChar(100), value.Title)
         .input('Author', mssql.VarChar(50), value.Author)
         .input('PublicationYear', mssql.Date, value.PublicationYear)
-        .execute('dbo.CreateBook');
+        .execute('library.CreateBook');
 
-      let getBooksResult = await sql.request().query('SELECT * FROM dbo.Books');
+      let getBooksResult = await sql.request().query('SELECT * FROM library.Books');
 
       console.log(createBookResult);
       console.log(getBooksResult.recordset);
@@ -54,13 +54,27 @@ async function GetBorrowingMember(req, res) {
 
 async function getBookByID(req, res) {
   try {
+    let token = req.headers['authorization'];
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: 'Token has not been provided',
+      });
+    }
+
+    token = token.split(' ')[1];
+    console.log(token);
+
+    let user = await tokenVerifier(token);
+    if (user.roles === 'admin') {
     let { BookID } = req.params;
     let sql = await mssql.connect(config);
 
     if (sql.connected) {
       let results = sql.request()
         .input('BookID', BookID)
-        .execute('get_book_by_id');
+        .execute('library.get_book_by_id');
 
       let book = (await results).recordset[0];
 
@@ -79,48 +93,95 @@ async function getBookByID(req, res) {
     } else {
       res.status(500).send("Internal server error");
     }
+  } else {
+    res.status(403).json({
+      success: false,
+      message: 'Unauthorized access',
+    });
+  }
   } catch (error) {
     res.status(400).json({
       success: false,
       message: 'Invalid book ID'
     });
+    if (error.message.includes('token') || error.message.includes('invalid')) {
+      res.status(403).json({
+        success: false,
+        message: 'Log in again',
+      });
+    } else {
+      res.status(500).send('Internal server error');
+    }
   }
 }
 
 async function getAllBooks(req, res) {
-
-  let token = req.headers['authorization'].split(" ")[1];
-  console.log(token)
   try {
+    let token = req.headers['authorization'];
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: 'Token has not been provided',
+      });
+    }
+
+    token = token.split(' ')[1];
+    console.log(token);
+
     let user = await tokenVerifier(token);
+    
     if (user.roles === 'admin') {
       let sql = await mssql.connect(config);
       if (sql.connected) {
-        let results = await sql.query(`SELECT * from library.Books`)
+        let results = await sql.query(`SELECT * from library.Books`);
         let books = results.recordset;
         res.json({
           success: true,
-          message: 'fetched all books',
-          results: books
-        })
+          message: 'Fetched all books',
+          results: books,
+        });
       } else {
-        res.status(500).send('Internal server error')
+        res.status(500).send('Internal server error');
       }
+    } else {
+      res.status(403).json({
+        success: false,
+        message: 'Unauthorized access',
+      });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
 
     if (error.message.includes('token') || error.message.includes('invalid')) {
       res.status(403).json({
         success: false,
-        body: 'Log in again'
-      })
+        message: 'Log in again',
+      });
+    } else {
+      res.status(500).send('Internal server error');
     }
   }
+}
 
-};
 
 async function getAllMembers(req, res) {
+  try{
+  let token = req.headers['authorization'];
+
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: 'Token has not been provided',
+    });
+  }
+
+  token = token.split(' ')[1];
+  console.log(token);
+
+  let user = await tokenVerifier(token);
+
+  if (user.roles === 'admin') {
   let sql = await mssql.connect(config);
   if (sql.connected) {
     let results = await sql.query(`SELECT * from library.Members`)
@@ -133,6 +194,24 @@ async function getAllMembers(req, res) {
     })
   } else {
     res.status(500).send('Internal server error')
+  }
+} else {
+    res.status(403).json({
+      success: false,
+      message: 'Unauthorized access',
+    });
+}
+  } catch(error) {
+    console.log(error)
+
+    if (error.message.includes('token') || error.message.includes('invalid')) {
+      res.status(403).json({
+        success: false,
+        message: error.message
+      });
+    } else {
+      res.status(500).send('Internal server error');
+    }
   }
 
 }
@@ -149,7 +228,7 @@ async function getMemberByID(req, res) {
       if (sql.connected) {
         let results = sql.request()
           .input('MemberID', MemberID)
-          .execute('GetMemberByID');
+          .execute('library.GetMemberByID');
 
         let member = (await results).recordset[0]
 

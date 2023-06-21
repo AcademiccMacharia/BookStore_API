@@ -12,7 +12,11 @@ async function sendReturnMail(email, name, title) {
     text: 
     `Dear ${name},
 
-    Thank you for returning our book. The Book Title is ${title}. 
+    Thank you for returning our book, ${title}.
+    
+    Your responsible act ensures others can also embark on their reading adventures.
+
+    We hope the book enriched your world and we look forward to serving you again!
     
     May your life forever be impacted by its knowledge.
 
