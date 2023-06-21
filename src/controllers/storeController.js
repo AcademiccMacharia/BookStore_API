@@ -1,12 +1,12 @@
 const mssql = require('mssql');
 const config = require('../config/bookStoreConfig');
-const{newBookValidator}=require('../validators/newBookValidator')
+const { newBookValidator } = require('../validators/newBookValidator')
 const { tokenVerifier } = require('../utils/tokens');
 
 async function createBook(req, res) {
   const book = req.body;
   try {
-    let { value }=newBookValidator(book)
+    let { value } = newBookValidator(book)
     let sql = await mssql.connect(config);
     if (sql.connected) {
       let createBookResult = await sql.request()
@@ -20,9 +20,10 @@ async function createBook(req, res) {
       console.log(createBookResult);
       console.log(getBooksResult.recordset);
 
-     createBookResult.rowsAffected? res.status(200).send({
+      createBookResult.rowsAffected ? res.status(200).send({
         success: true,
-        message: "Book created successfully" })
+        message: "Book created successfully"
+      })
         : res.status(500).send({ success: false, message: 'An error occured. Try again!' });
     }
   } catch (error) {
@@ -88,22 +89,33 @@ async function getAllBooks(req, res) {
 
   let token = req.headers['authorization'].split(" ")[1];
   console.log(token)
-
-  let user = await tokenVerifier(token);
-  if(user.roles === 'admin'){
+  try {
+    let user = await tokenVerifier(token);
+    if (user.roles === 'admin') {
       let sql = await mssql.connect(config);
-  if (sql.connected) {
-    let results = await sql.query(`SELECT * from library.Books`)
-    let books = results.recordset;
-    res.json({
-      success: true,
-      message: 'fetched all books',
-      results: books
-    })
-  } else {
-    res.status(500).send('Internal server error')
-  }
-  }
+      if (sql.connected) {
+        let results = await sql.query(`SELECT * from library.Books`)
+        let books = results.recordset;
+        res.json({
+          success: true,
+          message: 'fetched all books',
+          results: books
+        })
+      } else {
+        res.status(500).send('Internal server error')
+      }
+    }
+  } catch (error) {
+    console.log(error)
+
+    if (error.message.includes('token') || error.message.includes('invalid') ) {
+      res.status(403).json({
+        success: false,
+        body: 'Log in again'
+      })
+    }
+}
+
 };
 
 async function getAllMembers(req, res) {
@@ -128,37 +140,40 @@ async function getAllMembers(req, res) {
 
 
 async function getMemberByID(req, res) {
-  try{
-  let { MemberID } = req.params;
-  let sql = await mssql.connect(config);
-  if (sql.connected) {
+  try {
+    let { MemberID } = req.params;
+    let sql = await mssql.connect(config);
     if (sql.connected) {
-      let results = sql.request()
-        .input('MemberID', MemberID)
-        .execute('GetMemberByID');
+      if (sql.connected) {
+        let results = sql.request()
+          .input('MemberID', MemberID)
+          .execute('GetMemberByID');
 
-      let member = (await results).recordset[0]
+        let member = (await results).recordset[0]
 
-if(member){
-   res.json({
-      success: true,
-      message:'member with id ' + MemberID + ' fetched successfully',
-      results: member
-    })
-} else{
-    res.json({
+        if (member) {
+          res.json({
+            success: true,
+            message: 'member with id ' + MemberID + ' fetched successfully',
+            results: member
+          })
+        } else {
+          res.json({
+            success: false,
+            message: 'MemberID does not exist'
+          })
+        }
+
+      } else {
+        res.status(500).send("Internal server error");
+      }
+    }
+  } catch (error) {
+    res.status(400).json({
       success: false,
-      message: 'MemberID does not exist'}) }
-
-  } else {
-    res.status(500).send("Internal server error");
-  }}
-} catch (error) {
-  res.status(400).json({
-    success: false,
-    message: 'Invalid Member ID'
-  })
-}
+      message: 'Invalid Member ID'
+    })
+  }
 }
 
 
@@ -177,7 +192,7 @@ if(member){
 //       message: "Member created successfully",
 //       data: result.recordset,
 //     });
-    
+
 //   }
 // }
 
@@ -253,7 +268,7 @@ async function BorrowBook(req, res) {
   }
 }
 
-  
+
 module.exports = {
   Home: (req, res) => {
     res.send("Book Management API")
