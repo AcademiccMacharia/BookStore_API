@@ -1,5 +1,5 @@
 
-CREATE PROCEDURE library.BorrowBook
+CREATE OR ALTER PROCEDURE library.BorrowBook
     @MemberID INT,
     @BookID INT,
     @LoanDate DATE,

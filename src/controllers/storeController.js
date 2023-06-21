@@ -241,12 +241,11 @@ async function BorrowBook(req, res) {
       .input("BookID", BookID)
       .input("LoanDate", LoanDate)
       .input("ReturnDate", ReturnDate)
-      .execute('dbo.BorrowBook');
+      .execute('library.BorrowBook');
 
     console.log(result.recordset)
     res.json({
       success: true,
-      message: "Book borrowed successfully",
       data: result.recordset
     });
   } else {
