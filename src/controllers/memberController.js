@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const { getMemberByID } = require('../utils/getMember');
 const { tokenGenerator } = require('../utils/tokens');
 const { sendMail } = require('../utils/sendMail');
+const { newMemberValidator } = require('../validators/newMemberValidator');
 
 module.exports = {
   postMember: async (req, res) => {
@@ -11,14 +12,15 @@ module.exports = {
       let member = req.body;
       let hashedPwd = await bcrypt.hash(member.Password, 8);
 
+      let {value} = newMemberValidator(member)
       let sql = await mssql.connect(config);
       if (sql.connected) {
         let results = await sql.request()
-          .input("Name", member.Name)
-          .input("Address", member.Address)
-          .input("ContactNumber", member.ContactNumber)
+          .input("Name", value.Name)
+          .input("Address", value.Address)
+          .input("ContactNumber", value.ContactNumber)
           .input("Password", hashedPwd)
-          .input("Email", member.Email)
+          .input("Email", value.Email)
           .execute("library.create_member");
 
         console.log(results);

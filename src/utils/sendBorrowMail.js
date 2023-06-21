@@ -12,9 +12,11 @@ async function sendBorrowMail(email, name, title, return_date) {
     text: 
     `Dear ${name},
 
-    Thank you for borrowing our book. The Book Title is ${title}.
+    Congratulations on borrowing a new book!
     
-    May you get out of it what you desire.
+    The Book Title is ${title}.
+    
+    Enjoy the journey within its pages and may it transport you to captivating worlds and endless possibilities.
 
     Best regards,
     BraveCoders`
