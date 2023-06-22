@@ -17,6 +17,5 @@ app.use('/members', memberRoutes)
 
 const port = process.env.PORT;
 
-app.listen(port, () => {
-    console.log(`Server is listening on ${port}`)
+app.listen(port, () => { console.log(`Server is listening on ${port}`)
 })
