@@ -1,5 +1,4 @@
 const  joi =require('joi')
-// .extend(require('@joi/date'));
 
 const new_Book_Schema=joi.object({
        Title:joi.string()
@@ -11,9 +10,4 @@ const new_Book_Schema=joi.object({
                               
 }) 
 
-
-//  const borrow_Book_Schema=joi.object({
-//        BookID:joi.number()
-//               .required()
-//  })
     module.exports={new_Book_Schema};

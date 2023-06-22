@@ -4,7 +4,7 @@ require("dotenv").config();
 const email_config = require('../config/emailConfig');
 const transporter = createTransport(email_config);
 
-async function sendBorrowMail(email, name, title, return_date) {
+async function sendBorrowMail(email, name, title) {
   const message_options = {
     from: process.env.EMAIL_USER,
     to: email,

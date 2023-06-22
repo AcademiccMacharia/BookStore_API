@@ -10,9 +10,5 @@ BEGIN
     VALUES (@Title, @Author, @PublicationYear, @Status);
 END;
 GO
-EXEC library.CreateBook
-    @Title='Abunwasi na sufuria',
-    @Author='Chungu mwema',
-    @PublicationYear='2018-02-21'
-GO
+
 SELECT * FROM library.Books;
