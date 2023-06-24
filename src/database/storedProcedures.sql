@@ -3,7 +3,7 @@
 USE Library;
 GO
 
-CREATE PROCEDURE get_book_by_id
+CREATE PROCEDURE library.get_book_by_id
     @BookID INT
 AS
 BEGIN
@@ -19,7 +19,7 @@ EXEC get_book_by_id @BookID = 3;
 
 -- Create new Member
 
-CREATE PROCEDURE create_member
+CREATE PROCEDURE library.create_member
     @Name VARCHAR(50),
     @Address VARCHAR(50),
     @ContactNumber VARCHAR(50),
@@ -28,7 +28,7 @@ CREATE PROCEDURE create_member
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO Members (Name, Address, ContactNumber, Email, Password)
+    INSERT INTO library.Members (Name, Address, ContactNumber, Email, Password)
     VALUES (@Name, @Address, @ContactNumber, @Email, @Password);
 END;
 
@@ -68,14 +68,24 @@ GO
 USE Library;
 GO
 
-CREATE OR ALTER PROCEDURE GetMemberByID
+CREATE OR ALTER PROCEDURE library.GetMemberByID
     @MemberID INT
 AS
 BEGIN
     SELECT *
-    FROM Members
+    FROM library.Members
     WHERE MemberID = @MemberID;
 END;
 GO
 
 EXEC GetMemberByID @MemberID = 1;
+
+CREATE OR ALTER PROCEDURE library.getMemberByEmail
+    @Email
+AS
+BEGIN
+    SELECT *
+    FROM library.Members
+    WHERE Email = @Email;
+END;
+GO

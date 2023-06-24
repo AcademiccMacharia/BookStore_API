@@ -11,13 +11,12 @@ const new_Member_Schema=joi.object({
              .max(30),
 ContactNumber:joi.string()
                .required()
-               .max(16)
-               .min(16),
+               .max(16),
 Email:joi.string() 
             .required(),
   Password: joi.string()
             .required()
-            .pattern(new RegExp('^[a-zA-Z0-9]{6,30}$'))  ,
+            .pattern(new RegExp('^(?=.*[A-Za-z])(?=.*\d)(?=.*[@])[A-Za-z0-9@]{6,30}$'))  ,
  confirm_password:joi.ref('Password')            
 }).with('password','confirm_password')
 module.exports={new_Member_Schema}

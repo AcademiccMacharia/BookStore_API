@@ -1,0 +1,3 @@
+- SignUp is Working and email sent.
+- Login is working and Token generated as it should.
+- 

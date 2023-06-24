@@ -165,7 +165,7 @@ async function getAllBooks(req, res) {
 }
 
 async function deleteBook(req, res) {
-  const bookID = req.params.bookID; // Assuming the book ID is passed as a parameter in the request
+  const bookID = req.params.bookID;
 
   try {
     const sql = await mssql.connect(config);
