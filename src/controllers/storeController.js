@@ -4,6 +4,7 @@ const { newBookValidator } = require('../validators/newBookValidator')
 const { tokenVerifier } = require('../utils/tokens');
 const { sendBorrowMail } = require('../utils/sendBorrowMail');
 const { sendReturnMail } = require('../utils/sendReturnMail');
+const { authenticateUser } = require('../middlewares/authentication')
 
 async function createBook(req, res) {
   const book = req.body;
@@ -67,69 +68,54 @@ async function getBookByID(req, res) {
     console.log(token);
 
     let user = await tokenVerifier(token);
-    if (user.roles === 'admin') {
+    if (user.roles !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Unauthorized access',
+      });
+    }
+
     let { BookID } = req.params;
     let sql = await mssql.connect(config);
 
     if (sql.connected) {
-      let results = sql.request()
+      let results = await sql
+        .request()
         .input('BookID', BookID)
         .execute('library.get_book_by_id');
 
-      let book = (await results).recordset[0];
+      let book = results.recordset[0];
 
       if (book) {
-        res.json({
+        return res.json({
           success: true,
           message: 'Book with id ' + BookID + ' fetched successfully',
-          data: book
+          data: book,
         });
       } else {
-        res.status(404).json({
+        return res.status(404).json({
           success: false,
-          message: 'Book with id ' + BookID + ' not found'
+          message: 'Book with id ' + BookID + ' not found',
         });
       }
     } else {
-      res.status(500).send("Internal server error");
+      return res.status(500).send('Internal server error');
     }
-  } else {
-    res.status(403).json({
-      success: false,
-      message: 'Unauthorized access',
-    });
-  }
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: 'Invalid book ID'
-    });
     if (error.message.includes('token') || error.message.includes('invalid')) {
-      res.status(403).json({
+      return res.status(403).json({
         success: false,
         message: 'Log in again',
       });
     } else {
-      res.status(500).send('Internal server error');
+      return res.status(500).send('Internal server error');
     }
   }
 }
 
 async function getAllBooks(req, res) {
   try {
-    let token = req.headers['authorization'];
-
-    if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: 'Token has not been provided',
-      });
-    }
-
-    token = token.split(' ')[1];
-    console.log(token);
-
-    let user = await tokenVerifier(token);
+    let user = req.user;
     
     if (user.roles === 'admin') {
       let sql = await mssql.connect(config);
@@ -246,10 +232,6 @@ async function getAllMembers(req, res) {
   }
 
 }
-
-
-
-
 
 async function getMemberByID(req, res) {
   try {
@@ -426,6 +408,5 @@ module.exports = {
   Home: (req, res) => {
     res.send("Book Management API")
   },
-  getAllBooks, getAllMembers, getMemberByID, getAllMembers, getMemberByID, getBookByID, createBook, GetBorrowingMember, BorrowBook, returnBook, deleteBook
+  getAllBooks, getAllMembers, getMemberByID, getAllMembers, getMemberByID, getBookByID, createBook, GetBorrowingMember, BorrowBook, returnBook, deleteBook, authenticateUser
 }
-

@@ -1,4 +1,5 @@
 const express = require('express');
+const { authenticateUser } = require('../middlewares/authentication')
 
 const router = express.Router();
 
@@ -7,15 +8,15 @@ const { Home, getAllBooks, getAllMembers, getMemberByID, getBookByID, createMemb
 
 router.get('/', Home)
 router.get('/members', getAllMembers);
-router.get('/members/:MemberID', getMemberByID);
+router.get('/members/:MemberID', authenticateUser, getMemberByID);
 //router.post('/members', createMember);
-router.get('/books', getAllBooks);
-router.get('/books/:BookID', getBookByID);
+router.get('/books', authenticateUser, getAllBooks);
+router.get('/books/:BookID', authenticateUser, getBookByID);
 router.post('/books', createBook);
 router.delete('/books/:BookID', deleteBook);
 router.get('/borrowers', GetBorrowingMember);
-router.post('/borrow', BorrowBook);
-router.post('/return', returnBook);
+router.post('/borrow', authenticateUser, BorrowBook);
+router.post('/return', authenticateUser, returnBook);
 
 
 
