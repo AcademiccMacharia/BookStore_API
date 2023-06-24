@@ -164,6 +164,37 @@ async function getAllBooks(req, res) {
   }
 }
 
+async function deleteBook(req, res) {
+  const bookID = req.params.bookID; // Assuming the book ID is passed as a parameter in the request
+
+  try {
+    const sql = await mssql.connect(config);
+    if (sql.connected) {
+      const deleteBookResult = await sql.request()
+        .input('BookID', mssql.Int, bookID)
+        .execute('library.DeleteBook');
+
+      if (deleteBookResult.rowsAffected[0] > 0) {
+        res.status(200).send({
+          success: true,
+          message: "Book deleted successfully"
+        });
+      } else {
+        res.status(404).send({
+          success: false,
+          message: "Book not found"
+        });
+      }
+    }
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "An error occurred. Try again!"
+    });
+  }
+}
+
+
 
 async function getAllMembers(req, res) {
   try{
@@ -395,6 +426,6 @@ module.exports = {
   Home: (req, res) => {
     res.send("Book Management API")
   },
-  getAllBooks, getAllMembers, getMemberByID, getAllMembers, getMemberByID, getBookByID, createBook, GetBorrowingMember, BorrowBook, returnBook
+  getAllBooks, getAllMembers, getMemberByID, getAllMembers, getMemberByID, getBookByID, createBook, GetBorrowingMember, BorrowBook, returnBook, deleteBook
 }
 

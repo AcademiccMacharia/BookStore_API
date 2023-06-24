@@ -23,12 +23,13 @@ CREATE PROCEDURE create_member
     @Name VARCHAR(50),
     @Address VARCHAR(50),
     @ContactNumber VARCHAR(50),
+    @Email VARCHAR(255),
     @Password VARCHAR(255)
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO Members (Name, Address, ContactNumber, Password)
-    VALUES (@Name, @Address, @ContactNumber, @Password);
+    INSERT INTO Members (Name, Address, ContactNumber, Email, Password)
+    VALUES (@Name, @Address, @ContactNumber, @Email, @Password);
 END;
 
 -- EXEC create_member

@@ -1,9 +1,10 @@
-CREATE OR ALTER PROCEDURE library.BorrowBook
+CREATE OR ALTER PROCEDURE BorrowBook
     @MemberID INT,
     @BookID INT,
     @LoanDate DATE,
     @ReturnDate DATE,
-    @Status NVARCHAR(100) OUTPUT
+    @Status NVARCHAR(100),
+    @ImageUrl OUTPUT
 AS
 BEGIN
     SET NOCOUNT ON;
