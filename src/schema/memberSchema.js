@@ -14,6 +14,8 @@ ContactNumber:joi.string()
                .max(16),
 Email:joi.string() 
             .required(),
+IsAdmin:joi.number(),
+Role:joi.string(),
   Password: joi.string()
             .required()
             .pattern(new RegExp('^(?=.*[A-Za-z])(?=.*\d)(?=.*[@])[A-Za-z0-9@]{6,30}$'))  ,

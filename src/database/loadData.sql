@@ -25,13 +25,15 @@ CREATE TABLE library.Books(
 );
 GO
 
-CREATE TABLE library.Members(
+CREATE TABLE library.Members (
     MemberID INT IDENTITY(1,1) PRIMARY KEY,
     Name VARCHAR(50) NOT NULL,
     Address VARCHAR(50) NOT NULL,
     ContactNumber VARCHAR(50) NOT NULL,
     Email VARCHAR(255) NOT NULL UNIQUE,
-    Password VARCHAR(255) NOT NULL
+    Password VARCHAR(255) NOT NULL,
+    IsAdmin BIT DEFAULT 0 NOT NULL,
+    Role VARCHAR(50) DEFAULT 'user' CHECK (Role IN ('user', 'admin'))
 );
 GO
 
@@ -74,7 +76,7 @@ VALUES
     ('The Hobbit', 'J.R.R. Tolkien', '1937-09-21', 'Fantasy');
 
 
-INSERT INTO library.Members (Name, Address, ContactNumber, Email, Password)
+INSERT INTO library.Members (Name, Address, ContactNumber, Email, Password, IsAdmin, Role)
 VALUES
-    ('John Kimani', 'Nairobi, Kenya', '+254 712 345 678', 'example@example.com', 'P@ssw0rd1');
+    ('Immah Stuart', 'Nairobi, Kenya', '+254 712 345 678', 'immahstuart@gmail.com', 'P@ssw0rd1', 1, 'admin');
 GO

@@ -4,31 +4,42 @@ const { newBookValidator } = require('../validators/newBookValidator')
 const { tokenVerifier } = require('../utils/tokens');
 const { sendBorrowMail } = require('../utils/sendBorrowMail');
 const { sendReturnMail } = require('../utils/sendReturnMail');
-const { authenticateUser } = require('../middlewares/authentication')
+const { authenticateUser } = require('../middlewares/authenticateUser')
+const { authenticateAdmin } = require('../middlewares/authenticateAdmin')
 
 async function createBook(req, res) {
   const book = req.body;
   try {
-    let { value } = newBookValidator(book)
-    let sql = await mssql.connect(config);
-    if (sql.connected) {
-      let createBookResult = await sql.request()
-        .input('Title', mssql.VarChar(100), value.Title)
-        .input('Author', mssql.VarChar(50), value.Author)
-        .input('PublicationYear', mssql.Date, value.PublicationYear)
-        .execute('library.CreateBook');
+    let { value } = newBookValidator(book);
+    
+    // Check if user is authenticated
+    authenticateUser(req, res, () => {
+      // Check if user is an admin
+      authenticateAdmin(req, res, async () => {
+        try {
+          let sql = await mssql.connect(config);
+          if (sql.connected) {
+            let createBookResult = await sql.request()
+              .input('Title', mssql.VarChar(100), value.Title)
+              .input('Author', mssql.VarChar(50), value.Author)
+              .input('PublicationYear', mssql.Date, value.PublicationYear)
+              .execute('library.CreateBook');
 
-      let getBooksResult = await sql.request().query('SELECT * FROM library.Books');
+            let getBooksResult = await sql.request().query('SELECT * FROM library.Books');
 
-      console.log(createBookResult);
-      console.log(getBooksResult.recordset);
+            console.log(createBookResult);
+            console.log(getBooksResult.recordset);
 
-      createBookResult.rowsAffected ? res.status(200).send({
-        success: true,
-        message: "Book created successfully"
-      })
-        : res.status(500).send({ success: false, message: 'An error occured. Try again!' });
-    }
+            createBookResult.rowsAffected ? res.status(200).send({
+              success: true,
+              message: 'Book created successfully'
+            }) : res.status(500).send({ success: false, message: 'An error occurred. Try again!' });
+          }
+        } catch (error) {
+          res.send(error.message);
+        }
+      });
+    });
   } catch (error) {
     res.send(error.message);
   }
@@ -36,20 +47,25 @@ async function createBook(req, res) {
 
 async function GetBorrowingMember(req, res) {
   try {
+    // Check if the user is an admin
+    if (!req.user.isAdmin) {
+      return res.status(403).json({ message: 'Unauthorized access' });
+    }
+
     let sql = await mssql.connect(config);
     if (sql.connected) {
-      let result = await sql.request()
-        .execute('library.GetBorrowingMember')
-      console.log(result)
+      let result = await sql.request().execute('library.GetBorrowingMember');
+      console.log(result);
 
       res.status(200).json({
         statusCode: true,
-        message: "Got members who have borrowed successfully",
-        results: result.recordsets
-      })
+        message: 'Got members who have borrowed successfully',
+        results: result.recordsets,
+      });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    res.status(500).send('Internal server error');
   }
 }
 
@@ -66,14 +82,6 @@ async function getBookByID(req, res) {
 
     token = token.split(' ')[1];
     console.log(token);
-
-    let user = await tokenVerifier(token);
-    if (user.roles !== 'admin') {
-      return res.status(403).json({
-        success: false,
-        message: 'Unauthorized access',
-      });
-    }
 
     let { BookID } = req.params;
     let sql = await mssql.connect(config);
@@ -99,16 +107,18 @@ async function getBookByID(req, res) {
         });
       }
     } else {
-      return res.status(500).send('Internal server error');
+      return res.status(500).send('Internal server error: Database connection failed');
     }
   } catch (error) {
+    console.error(error); // Log the error for debugging purposes
+
     if (error.message.includes('token') || error.message.includes('invalid')) {
       return res.status(403).json({
         success: false,
         message: 'Log in again',
       });
     } else {
-      return res.status(500).send('Internal server error');
+      return res.status(500).send('Internal server error: ' + error.message);
     }
   }
 }
@@ -117,25 +127,19 @@ async function getAllBooks(req, res) {
   try {
     let user = req.user;
     
-    if (user.roles === 'admin') {
-      let sql = await mssql.connect(config);
-      if (sql.connected) {
-        let results = await sql.query(`SELECT * from library.Books`);
-        let books = results.recordset;
-        res.json({
-          success: true,
-          message: 'Fetched all books',
-          results: books,
-        });
-      } else {
-        res.status(500).send('Internal server error');
-      }
-    } else {
-      res.status(403).json({
-        success: false,
-        message: 'Unauthorized access',
-      });
+    let sql = await mssql.connect(config);
+    if (!sql.connected) {
+      return res.status(500).send('Internal server error');
     }
+
+    let results = await sql.query(`SELECT * from library.Books`);
+    let books = results.recordset;
+
+    res.json({
+      success: true,
+      message: 'Fetched all books',
+      results: books,
+    });
   } catch (error) {
     console.log(error);
 

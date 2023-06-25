@@ -29,8 +29,9 @@ module.exports = {
           .input("Name", value.Name)
           .input("Address", value.Address)
           .input("ContactNumber", value.ContactNumber)
-          .input("Password", hashedPwd)
           .input("Email", value.Email)
+          .input("Role", value.Role)
+          .input("Password", hashedPwd)
           .execute("library.create_member");
 
         console.log(results);
