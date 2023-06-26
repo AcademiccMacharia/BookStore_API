@@ -1,8 +1,5 @@
-*{
-  margin: 0;
-	 padding: 0;
-	 margin: 0 auto;
-   background-color: #383A3E;
+body{
+   background-color: #383A3E
 }
 
 .form{
