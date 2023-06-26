@@ -11,8 +11,7 @@ const new_Member_Schema=joi.object({
              .max(30),
 ContactNumber:joi.string()
                .required()
-               .max(16)
-               .min(16),
+               .max(16),
 Email:joi.string() 
             .required(),
   Password: joi.string()
