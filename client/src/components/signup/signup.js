@@ -1,46 +1,79 @@
 import React from 'react'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import axios from 'axios';
 import './signup.css'
 
 const Signup = () => {
+
+    const [inputs, setInputs] = useState({
+        "Name": "",
+        "Address": "",
+        "ContactNumber": "",
+        "Email": "",
+        "Password": "",
+        "confirm_password": ""
+    });
+
+    const [err, setErr] = useState(null);
+
+    const handleChange = e =>{
+        setInputs(prev=>({...prev, [e.target.name]: e.target.value}))
+    }
+
+    const handleClick = async e =>{
+        e.preventDefault()
+
+        try {
+            await axios.post("localhost:4040/members", inputs)
+        } catch (error) {
+            setErr(err);
+        }
+    };
+
+    console.log(err)
+
   return (
     <div className="form">
     <form> 
         <h1>SignUp</h1>
         <p>
             <label className="fullname" > FullName: </label>
-            <input required="required" type="text" placeholder="immah stuart"/>
+            <input required="required" type="text" placeholder="immah stuart" name='Name' onChange={handleChange}/>
         </p>
 
         <p>
             <label className="email" > Email: </label>
-            <input required="required" type="email" placeholder="mymail@mail.com"/>
+            <input required="required" type="email" placeholder="mymail@mail.com" name='Email' onChange={handleChange}/>
         </p>
 
         <p>
             <label className="address" > Address: </label>
-            <input required="required" type="text" placeholder="Town-City"/>
+            <input required="required" type="text" placeholder="Town-City" name='Address' onChange={handleChange}/>
         </p>
 
         <p>
             <label className="phone" > Phone Number: </label>
-            <input required="required" type="text" placeholder="+254 700 000 000"/>
+            <input required="required" type="text" placeholder="+254 700 000 000" name='ContactNumber' onChange={handleChange}/>
         </p>
 
         <p> 
-            <label for="password" className="youpasswd" data-icon="p"> Enter your password: </label>
-            <input id="password" name="password" required="required" type="password" placeholder="eg. X8df!90EO" /> 
+            <label className="youpasswd" data-icon="p"> Enter your password: </label>
+            <input id="password" required="required" type="password" placeholder="eg. X8df!90EO" name='Password' onChange={handleChange}/> 
         </p>
 
         <p> 
-            <label for="password" className="youpasswd" data-icon="p"> Confirm password: </label>
-            <input id="password" name="password" required="required" type="password" placeholder="eg. X8df!90EO" /> 
+            <label className="youpasswd" data-icon="p"> Confirm password: </label>
+            <input required="required" type="password" placeholder="eg. X8df!90EO" name='confirm_password' onChange={handleChange}/> 
         </p>
-        <p class="login button"> 
-            <input type="submit" value="Signup" /> 
+        <p className="login button"> 
+            <input onClick={handleClick} type="submit" value="Signup" /> 
         </p>
-        <p class="change_link">
+        <p className="change_link">
             Already a member ?
-            <a href="#toregister" class="to_register">Login</a>
+            <Link to="/login">
+            <span className="to_register">Login</span>
+            </Link>
         </p>
     </form>
 </div>
