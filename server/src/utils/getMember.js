@@ -13,4 +13,22 @@ async function getMemberByID(member_id) {
   }
 }
 
-module.exports = { getMemberByID };
+const getMemberByEmail = async (email) => {
+  try {
+    let sql = await mssql.connect(config);
+    if (sql.connected) {
+      let result = await sql
+        .request()
+        .input("Email", email)
+        .query("SELECT * FROM library.Members WHERE Email = @Email");
+
+      return result.recordset[0];
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+
+module.exports = { getMemberByID, getMemberByEmail };
