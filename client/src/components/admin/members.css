@@ -7,13 +7,13 @@
     transform: translate(-30%, -30%);
   }
  
-  table {
-    width: 80%;
+  .book-table {
+    width: 70%;
     height: 300px;
     border-collapse: collapse;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    margin-left: 200PX;
+    margin-left: 350PX;
   }
   
   th,
