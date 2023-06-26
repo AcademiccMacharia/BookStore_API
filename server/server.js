@@ -14,8 +14,9 @@ app.use(express.json());
 app.use('/',router);
 app.use('/members', memberRoutes);
 
-const port = 6050;
 
-app.listen(port, () => {
-    console.log(`Server is listening on ${port}`)
-});
+
+const port = process.env.PORT;
+
+app.listen(port, () => { console.log(`Server is listening on ${port}`)
+})
