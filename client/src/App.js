@@ -37,6 +37,18 @@ const router = createBrowserRouter([
 
 
 function App() {
+
+  const router = createBrowserRouter([
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Signup />,
+    }
+  ]);
+
   return (
  <RouterProvider router={router} />
   );
