@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './signup.css';
 
@@ -17,6 +17,8 @@ const Signup = () => {
 
   const [err, setErr] = useState(null);
 
+  const navigate = useNavigate()
+
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -26,6 +28,7 @@ const Signup = () => {
 
     try {
       await axios.post('http://localhost:4040/members', inputs);
+      navigate("/login")
     } catch (error) {
       setErr(err);
     }
@@ -65,13 +68,15 @@ const Signup = () => {
 
         <p> 
             <label className="youpasswd" data-icon="p"> Enter your password: </label>
-            <input id="password" required="required" type="password" placeholder="eg. X8df!90EO" name='Password' onChange={handleChange}/> 
+            <input required="required" type="password" placeholder="eg. X8df!90EO" name='Password' onChange={handleChange}/> 
         </p>
 
         <p> 
             <label className="youpasswd" data-icon="p"> Confirm password: </label>
             <input required="required" type="password" placeholder="eg. X8df!90EO" name='confirm_password' onChange={handleChange}/> 
         </p>
+
+        {err && err}
         <p className="login button">
           <input onClick={handleClick} type="submit" value="Signup" />
         </p>
