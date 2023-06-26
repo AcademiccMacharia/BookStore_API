@@ -27,7 +27,7 @@ const Signup = () => {
         try {
             await axios.post("localhost:4040/members", inputs)
         } catch (error) {
-            setErr(err);
+            setErr(err.response.data);
         }
     };
 
@@ -66,6 +66,8 @@ const Signup = () => {
             <label className="youpasswd" data-icon="p"> Confirm password: </label>
             <input required="required" type="password" placeholder="eg. X8df!90EO" name='confirm_password' onChange={handleChange}/> 
         </p>
+        
+        {err && err}
         <p className="login button"> 
             <input onClick={handleClick} type="submit" value="Signup" /> 
         </p>
