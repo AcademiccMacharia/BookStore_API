@@ -14,6 +14,7 @@ function Books() {
              <input type="text" placeholder="search something" />
            </div>
          </div>
+
          <div className="All-books">
            <SingleBook />
            <SingleBook />

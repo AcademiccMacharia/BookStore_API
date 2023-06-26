@@ -40,10 +40,11 @@ function SideBar() {
             <li className="navbar-toogle">
           
             </li>
-              <li className='nav-text'><Link to="/books"><FaIcons.FaBook/>BOOKS</Link></li>
+              <li className='nav-text'><Link to="/books"><FaIcons.FaBook/> ALL BOOKS</Link></li>
               <li className='nav-text'><Link to="/users" ><PiIcons.PiUsersThree/>USERS</Link></li>
               <li className='nav-text'><Link to="/loans" ><FaIcons.FaDownload/>LOANS</Link></li>
-              <li className='nav-text'><Link to="/settings" ><FiIcons.FiSettings/>SETTINGS</Link></li>
+              <li className='nav-text'><Link to="/settings" ><FiIcons.FiSettings/>ADD BOOK</Link></li>
+              <li className='nav-text'><Link to="/settings" ><FiIcons.FiSettings/>DELETE BOOK</Link></li>
            
           </ul>
         </nav>

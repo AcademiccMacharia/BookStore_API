@@ -8,6 +8,8 @@ import Members from './components/admin/members';
 import Books from './components/admin/books';
 import Loans from './components/admin/loans';
 import SideBar from './components/admin/sideBar';
+import Addbook from './components/admin/addbook';
+import Deletebook from './components/admin/deletebook';
 
 
 const router = createBrowserRouter(
@@ -41,9 +43,15 @@ const router = createBrowserRouter(
             cName:'nav-text'
           },
           { 
-            path: '/settings',
-            title:'SETTINGS',
-            element:<Members/>,
+            path: '/addbook',
+            title:'Addbook',
+            element:<Addbook/>,
+           cName:'nav-text'
+          },
+          { 
+            path: '/deletebook',
+            title:'Addbook',
+            element:<Deletebook/>,
            cName:'nav-text'
           } 
         ]}

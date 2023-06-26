@@ -46,4 +46,15 @@
     z-index: -1;
   } 
 
+  .books,
+.loans,
+.users,
+.settings{
+  display: flex;
+  height: 90vh;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
  
