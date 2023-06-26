@@ -1,4 +1,4 @@
-const {config} = require('../config/bookStoreConfig');
+const config = require('../config/bookStoreConfig');
 const mssql = require('mssql');
 const bcrypt = require('bcrypt');
 const { getMemberByID } = require('../utils/getMember');

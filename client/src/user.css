@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Ysabeau+Infant:wght@300;400;700&family=Ysabeau+SC:wght@400;700&display=swap');
 
-
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Ysabeau Infant', serif;
+}
 .login.light {
   --background: #fff;
   --text: #383A3E;
@@ -13,11 +18,11 @@
   --accent: #ff9800;
 }
 
-body{
+/* body{
   background-color: #383A3E;
   height: 100vh;
   color: #FFFFFF;
-}
+} */
 
 
 .user-page{
@@ -267,4 +272,95 @@ li img{
 }
 .btn-e:hover{
   border: 1px solid gold;
+}
+
+/* 
+homepage styles */
+
+.homepage{
+  background-color: #FFFFFF;
+  color:#000000;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  overflow-y: hidden;
+}
+.navbar{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+  padding: 20px;
+  border-bottom: 0.5px solid lightcoral;
+}
+.homepage span{
+  color: #ff9800;
+  text-decoration: none;
+}
+.links ul{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  list-style-type: none;
+  font-weight: 600;
+  color: rgb(146, 129, 129);
+}
+.links ul li:hover{
+  color: #ff9800;
+  cursor: pointer;
+}
+.nav-links{
+  text-decoration: none;
+  color: rgb(146, 129, 129);
+}
+.homepage .content{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  place-items: center;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+}
+.homepage .hero-left{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  width: 60%;
+  height: 80%;
+  margin-bottom: 100px;
+  padding: 20px;
+}
+.home-btn{
+  width: 150px;
+  height: 30px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: #ff9800;
+  color: #000000;
+  font-family: 'Ysabeau SC', serif;
+  font-size: 16px;
+  font-weight: 300;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.home-btn:hover{
+  color: #FFFFFF;
+transform: translateX(7%);
+
+}
+.homepage .hero-left h3{
+  font-size: 30px;
+  font-weight: 400;
+}
+.homepage .hero-right img{
+  width: 400px;
+  height: 600px;
 }
