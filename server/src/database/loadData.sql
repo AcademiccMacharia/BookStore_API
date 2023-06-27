@@ -32,7 +32,6 @@ CREATE TABLE library.Members (
   Password VARCHAR(255) NOT NULL,
   Role VARCHAR(255) DEFAULT 'User'
 );
-GO
 
 CREATE TABLE library.Loans (
   LoanID INT IDENTITY(1, 1) PRIMARY KEY,
