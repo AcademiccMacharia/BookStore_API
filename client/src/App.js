@@ -9,6 +9,7 @@ import Loans from './components/user/loans';
 import Login from './components/login/Login';
 import Signup from './components/signup/signup';
 import './user.css';
+import SingleBook from './components/user/SingleBook';
 
 function App() {
 
@@ -44,8 +45,16 @@ function App() {
         {
           path: '/user/loans',
           element: <Loans />
+        },
+        {
+          path: '/user/return',
+          element: <Return />
         }
       ]
+    },
+    {
+      path: '/books/:id',
+      element: <SingleBook />
     }
   ]);
 

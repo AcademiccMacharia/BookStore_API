@@ -26,9 +26,9 @@ const Panel = () => {
                     </div>
                     <div className='side-panel_items'>
                         <ul className="side-panel_list">
-                           <Link className="panel-links" to='/'> <li className='activo'> <img src={bkimg} className='icons' alt='book' /> Available Books</li> </Link>
-                            <Link className="panel-links" to='/borrow'><li> <img src={loanimg} className='icons' alt='book' /> Borrowed Books</li></Link>
-                            <Link className="panel-links" to='/loans'><li> <img src={settingimg} className='icons' alt='book' /> Settings</li></Link>
+                           <Link className="panel-links" to='/user'> <li className='activo'> <img src={bkimg} className='icons' alt='book' /> Available Books</li> </Link>
+                            <Link className="panel-links" to='/user/loans'><li> <img src={loanimg} className='icons' alt='book' /> My Library</li></Link>
+                            <Link className="panel-links" to='/user/borrow'><li> <img src={settingimg} className='icons' alt='book' /> Settings</li></Link>
 
                         </ul>
                         <button className="btn-e"onClick={toggleTheme}>Toggle Theme</button>
