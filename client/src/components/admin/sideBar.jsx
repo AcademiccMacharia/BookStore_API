@@ -23,10 +23,10 @@ function SideBar() {
   
      
    <div className="navbar ">
- 
+{/*  
  <Link to='/' className= "menu-bars">
  < FaIcons.FaHamburger onClick={showsidebar}/>
- </Link>
+ </Link> */}
 </div>
    <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
           <ul className="nav-menu-items" onClick={showsidebar}>
@@ -42,9 +42,9 @@ function SideBar() {
             </li>
               <li className='nav-text'><Link to="/books"><FaIcons.FaBook/> ALL BOOKS</Link></li>
               <li className='nav-text'><Link to="/users" ><PiIcons.PiUsersThree/>USERS</Link></li>
-              <li className='nav-text'><Link to="/loans" ><FaIcons.FaDownload/>LOANS</Link></li>
-              <li className='nav-text'><Link to="/settings" ><FiIcons.FiSettings/>ADD BOOK</Link></li>
-              <li className='nav-text'><Link to="/settings" ><FiIcons.FiSettings/>DELETE BOOK</Link></li>
+              <li className='nav-text'><Link to="/loanedbooks" ><FaIcons.FaDownload/>LOANS</Link></li>
+              <li className='nav-text'><Link to="/addbook" ><FiIcons.FiSettings/>ADD BOOK</Link></li>
+              <li className='nav-text'><Link to="/deletebook" ><FiIcons.FiSettings/>DELETE BOOK</Link></li>
            
           </ul>
         </nav>
