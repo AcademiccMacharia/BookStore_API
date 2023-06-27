@@ -22,7 +22,6 @@ CREATE TABLE library.Books (
   ImageUrl VARCHAR(255) NOT NULL,
   Status VARCHAR(20) DEFAULT 'Available'
 );
-GO
 
 CREATE TABLE library.Members (
   MemberID INT IDENTITY(1, 1) PRIMARY KEY,
