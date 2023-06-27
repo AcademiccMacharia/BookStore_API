@@ -20,7 +20,9 @@ const homepage = () => {
                 <div className='hero-left'>
                     <h3><span>Soma Soma: </span>Tales, Tomes, and Tea</h3>
                     <p>Immerse Yourself in Literary Delights, Sip Some Tea, and Let the Pages Unfold!</p>
-                    <button className='home-btn'>Get Started</button>
+                    <Link to="/register">
+                        <button className='home-btn'>Get Started</button>
+                    </Link>
                 </div>
                 <div className='hero-right'>
                     <img src={read} alt='reading' />
