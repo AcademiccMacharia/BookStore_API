@@ -1,7 +1,7 @@
 const config = require('../config/bookStoreConfig');
 const mssql = require('mssql');
 const bcrypt = require('bcrypt');
-const { getMemberByID } = require('../utils/getMember');
+const { getMemberByEmail } = require('../utils/getMember');
 const { tokenGenerator } = require('../utils/tokens');
 const { sendMail } = require('../utils/sendMail');
 const { newMemberValidator } = require('../validators/newMemberValidator');
@@ -17,10 +17,10 @@ module.exports = {
       if (sql.connected) {
         let results = await sql.request()
           .input("Name", value.Name)
+          .input("Email", value.Email)
           .input("Address", value.Address)
           .input("ContactNumber", value.ContactNumber)
           .input("Password", hashedPwd)
-          .input("Email", value.Email)
           .execute("library.create_member");
 
         console.log(results);
@@ -43,15 +43,14 @@ module.exports = {
 
 
   loginMember: async (req, res) => {
-    let { MemberID, Password } = req.body;
+    let { Email, Password } = req.body;
     try {
-      let member = await getMemberByID(MemberID);
+      let member = await getMemberByEmail(Email);
       if (member) {
         let passwordMatch = await bcrypt.compare(Password, member.Password);
         if (passwordMatch) {
           let token = await tokenGenerator({
-            MemberID: member.MemberID,
-            roles: "admin"
+            MemberID: member.MemberID
           });
 
           res.json({
