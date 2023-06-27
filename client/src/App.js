@@ -10,6 +10,7 @@ import Return from './components/user/return';
 import Loans from './components/user/loans';
 import Members from './components/admin/members';
 import './user.css';
+import SingleBook from './components/user/SingleBook';
 
 
 import Books from './components/admin/books';
@@ -56,11 +57,17 @@ function App() {
         {
           path: '/user/loans',
           element: <Loans />
-        }
-      ]
         },
-
-    
+        {
+          path: '/user/return',
+          element: <Return />
+        }
+    ]
+    },
+    {
+      path: '/books/:id',
+      element: <SingleBook />
+    },
     {
       path: '/books',
      title:'BOOKS',
