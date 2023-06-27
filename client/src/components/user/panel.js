@@ -1,8 +1,11 @@
 import React, { useState, createContext } from 'react';
 import bkimg from '../../assets/w-book.png';
 import fimg from '../../assets/image.jpeg';
-import loanimg from '../../assets/w-loaned.png';
-import settingimg from '../../assets/settings.png';
+
+import borrowing from '../../assets/w-borrow.png';
+// import returning from '../../assets/w-return.png';
+import loaning from '../../assets/w-loaned.png';
+// import settings from '../../assets/settings.png';
 import { Link, Outlet } from 'react-router-dom';
 
 
@@ -26,6 +29,7 @@ const Panel = () => {
                     </div>
                     <div className='side-panel_items'>
                         <ul className="side-panel_list">
+
                            <Link className="panel-links" to='/user'> <li className='activo'> <img src={bkimg} className='icons' alt='book' /> Available Books</li> </Link>
                             <Link className="panel-links" to='/user/loans'><li> <img src={loanimg} className='icons' alt='book' /> My Library</li></Link>
                             <Link className="panel-links" to='/user/borrow'><li> <img src={settingimg} className='icons' alt='book' /> Settings</li></Link>

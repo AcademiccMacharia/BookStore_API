@@ -1,62 +1,41 @@
-import React,{useMemo} from 'react'
+import React, { useEffect, useState } from 'react';
 import './members.css'
-import Data from './mockup'
-import {useTable} from 'react-table'
-function Loans() {
-  const data= useMemo (() => Data ,[])
-  const columns=useMemo(() => [
-    {
-      Header:"NAME",
-      accessor:"name"
-    },
-    {
-      Header:"EMAIL",
-      accessor:"email"
-    },
-    {
-      Header:"ADDRESS",
-      accessor:"address"
-    },
-    {
-      Header:"CONTACTNUMBER",
-      accessor:"contactNumber"
-    }
-  ],[]);
+const LoanedBooks = () => {
+  const [data, setData] = useState([]);
 
-  const {getTableProps, getTableBodyProps, headerGroups, rows, prepareRow} =useTable ({columns, data})
+  useEffect(() => {
+    fetch('http://localhost:3000/loanedbooks')
+      .then(res => res.json())
+      .then(data => setData(data.results[0]))
+      .catch(err => console.log(err))
+  }, []);
+
+  console.log(data);
   return (
-    <>
-    <h2>Users</h2>
-    <div className='container'>
-      <table {...getTableProps()}>
+  <>
+      <h3>Borrowed Books</h3>
+      <table className="book-table">
         <thead>
-          {headerGroups.map((headerGroup) =>(
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) =>(
-                <th {...column.getHeaderProps()}>
-                  {column.render("Header")}
-                </th>
-              ))}
+          <tr>
+            <th>Member ID</th>
+            <th>Book Name</th>
+            <th>Book ID</th>
+            <th>Book Title</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map(d => (
+            <tr key={d.MemberID}>
+              <td>{d.MemberID}</td>
+              <td>{d.Name}</td>
+              <td>{d.BookID}</td>
+              <td>{d.Title}</td>
             </tr>
           ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-            {rows.map((row) =>{
-              prepareRow(row)
-              return(
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) =>(
-                  <td {...cell.getCellProps()}>
-                      {cell.render("Cell")} 
-                  </td>
-            ))}
-                </tr>
-              )
-            })}
-          </tbody>
+        </tbody>
       </table>
-    </div>
-    </>
-    )}
+      </>
+  );
+};
 
-export default Loans
+export default LoanedBooks;
