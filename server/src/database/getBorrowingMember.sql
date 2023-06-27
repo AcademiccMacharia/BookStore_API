@@ -10,4 +10,3 @@ BEGIN
     INNER JOIN Books ON Loans.BookID = Books.BookID
     WHERE Books.BookID = @BookID OR @BookID IS NULL;
 END;
-GO
