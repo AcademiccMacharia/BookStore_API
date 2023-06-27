@@ -1,4 +1,4 @@
-CREATE PROCEDURE create_member
+CREATE PROCEDURE library.create_member
     @Name VARCHAR(50),
     @Email VARCHAR(255),
     @Address VARCHAR(50),
@@ -7,6 +7,6 @@ CREATE PROCEDURE create_member
 AS
 BEGIN
     SET NOCOUNT ON;
-    INSERT INTO Members (Name, Email, Address, ContactNumber, Password)
+    INSERT INTO library.Members (Name, Email, Address, ContactNumber, Password)
     VALUES (@Name, @Email, @Address, @ContactNumber, @Password);
 END;
