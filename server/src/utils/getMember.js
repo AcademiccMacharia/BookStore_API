@@ -1,7 +1,8 @@
 const mssql = require('mssql');
-const config = require('../config/bookStoreConfig');
+const {config} = require('../config/bookStoreConfig');
 
 async function getMemberByID(member_id) {
+  console.log(config)
   let sql = await mssql.connect(config);
   if (sql.connected) {
     let results = await sql.request()

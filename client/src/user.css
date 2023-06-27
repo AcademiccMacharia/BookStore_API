@@ -1,0 +1,366 @@
+@import url('https://fonts.googleapis.com/css2?family=Ysabeau+Infant:wght@300;400;700&family=Ysabeau+SC:wght@400;700&display=swap');
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Ysabeau Infant', serif;
+}
+.login.light {
+  --background: #fff;
+  --text: #383A3E;
+  --accent: rgb(189, 99, 26);
+}
+
+.login.dark {
+  --background: #383A3E;
+  --text: #fff;
+  --accent: #ff9800;
+}
+
+/* body{
+  background-color: #383A3E;
+  height: 100vh;
+  color: #FFFFFF;
+} */
+
+
+.user-page{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  height: 100vh;
+}
+
+.side-panel{
+  position: fixed;
+  width: 25%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  border-right: 1px solid #979191;
+  align-items: center;
+  padding-top: 30px;
+}
+.fimg{
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
+li img{
+  height: 20px;
+  width: 20px;
+}
+.side-panel_header img{
+  height: 40px;
+  width: 40px;
+}
+.side-panel_header span{
+  font-family: 'Ysabeau SC', serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05cm;
+}
+.side-panel_list{
+  list-style: none;
+  margin-top: 20px;
+}
+.side-panel_list li{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+.side-panel_list li:hover{
+    background-color: #4A4847;
+    cursor: pointer;
+}
+.side-profile{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.panel-links{
+  color:#fff;
+    text-decoration:none;
+    transition:.6s ease all;
+}
+.header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 75%;
+  height: 15%;
+  margin-top: 15px;
+  margin-left: 350px;
+}
+.panel-header{
+  height: 15%;
+  width: 100%;
+}
+.header h3{
+  font-family: 'Ysabeau SC', serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+.profile img{
+  width: 40px;
+  height: 40px;
+}
+.search-input input{
+  width: 400px;
+  height: 100%;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  background-color: #4A4847;
+  color: #FFFFFF;
+}
+.panel-body{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+.book-list{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center;
+  gap: 40px;
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+}
+.book{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 900px;
+  height: 100%;
+  padding: 20px;
+  margin-left: 350px;
+  border-radius: 10px;
+  background-color: #4A4847;
+}
+.book h3{
+  font-family: 'Ysabeau SC', serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+.book img{
+  cursor: pointer;
+}
+
+
+/* borrow page styles */
+
+.borrow-book{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 400px;
+  height: 500px;
+  padding: 20px;
+  margin-left: 650px;
+  margin-top: 100px;
+  border-radius: 10px;
+  background-color: #4A4847;
+}
+.borrow-form{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+  gap: 10px;
+  width: 100%;
+  height: 300px;
+}
+.borrow-form input{
+  width: 350px;
+  height: 20px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  background-color: #FFFFFF;
+  color: #000000;
+}
+.borrow-book button{
+  width: 150px;
+  height: 30px;
+  margin-left: 100px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: 'Ysabeau SC', serif;
+  font-size: 16px;
+  font-weight: 300;
+  cursor: pointer;
+}
+.borrow-book button:hover{
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+
+/* loans styles */
+
+.book-table-container {
+  background-color: #4A4847;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-left: 650px;
+  height: 500px;
+  margin-top: 100px;
+}
+.book-table-container h3{
+  display: inline-block;
+    position: relative;
+    top:-9px;
+}
+.book-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-y: scroll;
+}
+
+.book-table th,
+.book-table td {
+  padding: 12px;
+  text-align: left;
+  border: 0.5px solid white;
+  
+}
+
+.book-table th {
+  background-color: #333;
+}
+
+.book-table tbody tr:nth-child(even) {
+  background-color: #444;
+}
+
+.book-table tbody tr:hover {
+  background-color: #555;
+}
+
+
+.btn-e{
+  width: 150px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: 0.5px solid rgb(227, 219, 219);
+  outline: none;
+  background-color: var(--background);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1cm;
+  color: var(--text);
+}
+.btn-e:hover{
+  border: 1px solid gold;
+}
+
+/* 
+homepage styles */
+
+.homepage{
+  background-color: #FFFFFF;
+  color:#000000;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  overflow-y: hidden;
+}
+.navbar{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+  padding: 20px;
+  border-bottom: 0.5px solid lightcoral;
+}
+.homepage span{
+  color: #ff9800;
+  text-decoration: none;
+}
+.links ul{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  list-style-type: none;
+  font-weight: 600;
+  color: rgb(146, 129, 129);
+}
+.links ul li:hover{
+  color: #ff9800;
+  cursor: pointer;
+}
+.nav-links{
+  text-decoration: none;
+  color: rgb(146, 129, 129);
+}
+.homepage .content{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  place-items: center;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+}
+.homepage .hero-left{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  width: 60%;
+  height: 80%;
+  margin-bottom: 100px;
+  padding: 20px;
+}
+.home-btn{
+  width: 150px;
+  height: 30px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: #ff9800;
+  color: #000000;
+  font-family: 'Ysabeau SC', serif;
+  font-size: 16px;
+  font-weight: 300;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.home-btn:hover{
+  color: #FFFFFF;
+transform: translateX(7%);
+
+}
+.homepage .hero-left h3{
+  font-size: 30px;
+  font-weight: 400;
+}
+.homepage .hero-right img{
+  width: 400px;
+  height: 600px;
+}

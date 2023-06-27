@@ -11,4 +11,4 @@ const email_config = {
     }
 }
 
-module.exports = email_config;
+module.exports = {email_config};
