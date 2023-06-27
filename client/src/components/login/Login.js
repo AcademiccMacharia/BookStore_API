@@ -25,7 +25,7 @@ const Login = () => {
 
     try {
       await axios.post("http://localhost:4040/members/login", inputs);
-      navigate("/register")
+      navigate("/user")
     } catch (error) {
       setErr(err);
     }
