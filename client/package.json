@@ -7,6 +7,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
+    "builtin-modules": "^3.3.0",
     "cors": "^2.8.5",
     "joi": "^17.9.2",
     "outlet": "^0.1.5",
